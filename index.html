@@ -93,7 +93,7 @@
         window.addEventListener("resize", resizeCanvas);
         resizeCanvas();
 
-        function generateNoise(x, y, time, scale = 0.005) {
+        function generateNoise(x, y, time, scale = 0.01) {
             return Math.sin((x * scale + y * scale + time * 0.01) * Math.PI * 2);
         }
 
@@ -101,26 +101,30 @@
             ctx.clearRect(0, 0, width, height);
 
             const layers = 15; // Number of contour layers
-            const step = 50;   // Spacing between layers
+            const step = 30;   // Spacing between layers
 
             for (let i = 0; i < layers; i++) {
                 ctx.beginPath();
-                ctx.lineWidth = 1;
+                ctx.lineWidth = 1.5;
                 ctx.strokeStyle = `rgba(255, 255, 255, ${1 - i / layers})`;
 
-                for (let y = 0; y < height; y += step) {
-                    for (let x = 0; x < width; x += 10) {
+                const points = [];
+                for (let x = 0; x <= width; x += step) {
+                    for (let y = 0; y <= height; y += step) {
                         const noise = generateNoise(x, y, time + i * 5);
-                        const adjustedY = y + noise * 20;
+                        const adjustedX = x + noise * 15;
+                        const adjustedY = y + noise * 15;
+                        points.push({ x: adjustedX, y: adjustedY });
 
-                        if (x === 0) {
-                            ctx.moveTo(x, adjustedY);
+                        if (points.length === 1) {
+                            ctx.moveTo(adjustedX, adjustedY);
                         } else {
-                            ctx.lineTo(x, adjustedY);
+                            ctx.lineTo(adjustedX, adjustedY);
                         }
                     }
                 }
 
+                ctx.closePath();
                 ctx.stroke();
             }
 
