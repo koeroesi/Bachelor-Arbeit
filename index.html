@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Topographic AR Experience</title>
+    <title>Topological Map AR</title>
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <style>
@@ -93,34 +93,42 @@
         window.addEventListener("resize", resizeCanvas);
         resizeCanvas();
 
-        function drawTopography() {
+        function generateNoise(x, y, time, scale = 0.005) {
+            return Math.sin((x * scale + y * scale + time * 0.01) * Math.PI * 2);
+        }
+
+        function drawContours() {
             ctx.clearRect(0, 0, width, height);
 
-            const layers = 20; // Number of layers
-            const step = 25; // Distance between contour levels
-            ctx.lineWidth = 1;
+            const layers = 15; // Number of contour layers
+            const step = 50;   // Spacing between layers
 
             for (let i = 0; i < layers; i++) {
-                const level = i * step;
-                ctx.strokeStyle = `rgba(255, 255, 255, ${1 - i / layers})`;
                 ctx.beginPath();
+                ctx.lineWidth = 1;
+                ctx.strokeStyle = `rgba(255, 255, 255, ${1 - i / layers})`;
 
-                for (let angle = 0; angle <= 360; angle += 1) {
-                    const rad = (angle * Math.PI) / 180;
-                    const x = width / 2 + (level + Math.sin(time / 100 + i) * 15) * Math.cos(rad);
-                    const y = height / 2 + (level + Math.cos(time / 100 + i) * 15) * Math.sin(rad);
-                    angle === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+                for (let y = 0; y < height; y += step) {
+                    for (let x = 0; x < width; x += 10) {
+                        const noise = generateNoise(x, y, time + i * 5);
+                        const adjustedY = y + noise * 20;
+
+                        if (x === 0) {
+                            ctx.moveTo(x, adjustedY);
+                        } else {
+                            ctx.lineTo(x, adjustedY);
+                        }
+                    }
                 }
 
-                ctx.closePath();
                 ctx.stroke();
             }
 
-            time += 1; // Animation speed
-            requestAnimationFrame(drawTopography);
+            time += 1; // Increment time for animation
+            requestAnimationFrame(drawContours);
         }
 
-        drawTopography();
+        drawContours();
 
         function activateAR() {
             alert("AR mode activated!");
