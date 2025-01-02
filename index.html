@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topographic AR Experience</title>
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* General Styling */
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: black;
+            color: white;
+            height: 100vh;
+            position: relative;
+        }
+
+        /* Background Canvas */
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        /* Content Styling */
+        .content {
+            text-align: center;
+            z-index: 1;
+        }
+
+        .content h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .content p {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 12px 24px;
+            font-size: 1rem;
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <canvas id="topoCanvas"></canvas>
+
+    <div class="content">
+        <h1>Explore in AR</h1>
+        <p>Interact with this 3D model in real-time.</p>
+        <model-viewer src="model.glb" 
+                      ios-src="model.usdz" 
+                      alt="3D Model" 
+                      ar 
+                      auto-rotate 
+                      camera-controls>
+        </model-viewer>
+        <button onclick="activateAR()">View in AR</button>
+    </div>
+
+    <script>
+        const canvas = document.getElementById("topoCanvas");
+        const ctx = canvas.getContext("2d");
+
+        let width, height, time = 0;
+
+        function resizeCanvas() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener("resize", resizeCanvas);
+        resizeCanvas();
+
+        function drawTopography() {
+            ctx.clearRect(0, 0, width, height);
+
+            const layers = 20; // Number of layers
+            const step = 25; // Distance between contour levels
+            ctx.lineWidth = 1;
+
+            for (let i = 0; i < layers; i++) {
+                const level = i * step;
+                ctx.strokeStyle = `rgba(255, 255, 255, ${1 - i / layers})`;
+                ctx.beginPath();
+
+                for (let angle = 0; angle <= 360; angle += 1) {
+                    const rad = (angle * Math.PI) / 180;
+                    const x = width / 2 + (level + Math.sin(time / 100 + i) * 15) * Math.cos(rad);
+                    const y = height / 2 + (level + Math.cos(time / 100 + i) * 15) * Math.sin(rad);
+                    angle === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+                }
+
+                ctx.closePath();
+                ctx.stroke();
+            }
+
+            time += 1; // Animation speed
+            requestAnimationFrame(drawTopography);
+        }
+
+        drawTopography();
+
+        function activateAR() {
+            alert("AR mode activated!");
+        }
+    </script>
+</body>
+</html>
