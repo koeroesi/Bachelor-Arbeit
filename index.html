@@ -7,39 +7,29 @@
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* General Styling */
         body {
             margin: 0;
             font-family: 'Inter', sans-serif;
-            overflow: hidden;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: black;
+            background: #121212;
             color: white;
             height: 100vh;
             position: relative;
         }
 
-        /* Background Canvas */
-        canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
-
-        /* Content Styling */
         .content {
             text-align: center;
             z-index: 1;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
         }
 
         .content h1 {
-            font-size: 3rem;
+            font-size: 2.5rem;
             margin-bottom: 10px;
         }
 
@@ -62,11 +52,20 @@
         button:hover {
             background: rgba(255, 255, 255, 0.4);
         }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.3;
+        }
     </style>
 </head>
 <body>
     <canvas id="topoCanvas"></canvas>
-
     <div class="content">
         <h1>Explore in AR</h1>
         <p>Interact with this 3D model in real-time.</p>
@@ -93,42 +92,26 @@
         window.addEventListener("resize", resizeCanvas);
         resizeCanvas();
 
-        function generateNoise(x, y, time, scale = 0.01) {
-            return Math.sin((x * scale + y * scale + time * 0.01) * Math.PI * 2);
+        function generateNoise(x, y, time, scale = 0.005) {
+            return Math.sin((x * scale + y * scale + time * 0.005) * Math.PI * 2);
         }
 
         function drawContours() {
             ctx.clearRect(0, 0, width, height);
+            ctx.strokeStyle = "rgba(255, 255, 255, 0.3)";
+            ctx.lineWidth = 1;
 
-            const layers = 15; // Number of contour layers
-            const step = 30;   // Spacing between layers
-
-            for (let i = 0; i < layers; i++) {
-                ctx.beginPath();
-                ctx.lineWidth = 1.5;
-                ctx.strokeStyle = `rgba(255, 255, 255, ${1 - i / layers})`;
-
-                const points = [];
-                for (let x = 0; x <= width; x += step) {
-                    for (let y = 0; y <= height; y += step) {
-                        const noise = generateNoise(x, y, time + i * 5);
-                        const adjustedX = x + noise * 15;
-                        const adjustedY = y + noise * 15;
-                        points.push({ x: adjustedX, y: adjustedY });
-
-                        if (points.length === 1) {
-                            ctx.moveTo(adjustedX, adjustedY);
-                        } else {
-                            ctx.lineTo(adjustedX, adjustedY);
-                        }
-                    }
+            const step = 40;
+            for (let x = 0; x < width; x += step) {
+                for (let y = 0; y < height; y += step) {
+                    const noise = generateNoise(x, y, time) * 10;
+                    ctx.beginPath();
+                    ctx.moveTo(x, y);
+                    ctx.lineTo(x + noise, y + noise);
+                    ctx.stroke();
                 }
-
-                ctx.closePath();
-                ctx.stroke();
             }
-
-            time += 1; // Increment time for animation
+            time += 1;
             requestAnimationFrame(drawContours);
         }
 
