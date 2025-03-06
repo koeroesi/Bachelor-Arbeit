@@ -55,9 +55,13 @@
             width: 100%;
             max-width: 500px;
             height: 500px;
-            --ar-button-display: none; /* Versteckt den standard AR-Button */
-            background: none;
+            --ar-button-display: none;
+            background: transparent;
             border-radius: 0;
+            shadow-intensity: 1;
+            camera-orbit="45deg 75deg auto";
+            poster="loading-image.jpg";
+            reveal="auto";
         }
 
         .custom-button {
@@ -108,7 +112,11 @@
                   animation-loop
                   ar
                   ar-modes="webxr scene-viewer quick-look"
-                  environment-image="neutral">
+                  environment-image="neutral"
+                  shadow-intensity="1"
+                  camera-orbit="45deg 75deg auto"
+                  poster="loading-image.jpg"
+                  reveal="auto">
     </model-viewer>
     <button class="custom-button" id="custom-ar-button" onclick="activateAR()">View in AR</button>
     
