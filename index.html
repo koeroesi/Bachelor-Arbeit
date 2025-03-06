@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Neue Dimensionen im Kostümdesign - Leon Luca Körösi, HAW, MOKOTEX, 2596897</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Topological Map AR - Leon Luca Körösi, HAW, MOKOTEX, 2596897</title>
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <style>
@@ -18,6 +18,7 @@
             color: white;
             height: 100vh;
             overflow: hidden;
+            padding: 10px;
         }
 
         .content {
@@ -28,6 +29,7 @@
             opacity: 0;
             transform: translateY(20px);
             animation: fadeInUp 1s forwards;
+            max-width: 90%;
         }
 
         @keyframes fadeInUp {
@@ -38,7 +40,7 @@
         }
 
         .content h1 {
-            font-size: 2rem;
+            font-size: 1.8rem;
             margin-bottom: 10px;
             letter-spacing: 1px;
         }
@@ -49,34 +51,46 @@
             opacity: 0.8;
         }
 
-        button {
-            padding: 10px 20px;
+        .custom-button {
+            padding: 12px 24px;
             font-size: 1rem;
             color: #ffffff;
-            background: rgba(255, 255, 255, 0.2);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
             border: none;
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s ease;
             backdrop-filter: blur(5px);
+            width: 100%;
+            max-width: 300px;
+            box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
         }
 
-        button:hover {
-            background: rgba(255, 255, 255, 0.3);
+        .custom-button:hover {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.2));
             transform: scale(1.05);
         }
 
         model-viewer {
             width: 100%;
-            max-width: 500px;
-            height: 500px;
-            opacity: 0;
-            animation: fadeIn 1.5s forwards 0.5s;
+            max-width: 100%;
+            height: auto;
+            min-height: 300px;
         }
 
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
+        @media (max-width: 768px) {
+            .content h1 {
+                font-size: 1.5rem;
+            }
+            .content p {
+                font-size: 0.9rem;
+            }
+            model-viewer {
+                min-height: 250px;
+            }
+            .custom-button {
+                padding: 10px 20px;
+                font-size: 0.9rem;
             }
         }
     </style>
@@ -90,9 +104,10 @@
                       alt="3D Model" 
                       ar 
                       auto-rotate 
-                      camera-controls>
+                      camera-controls 
+                      autoplay>
         </model-viewer>
-        <button onclick="activateAR()">View in AR</button>
+        <button class="custom-button" onclick="activateAR()">🔍 View in AR</button>
     </div>
 
     <script>
