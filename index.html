@@ -107,13 +107,7 @@
                       camera-controls 
                       autoplay>
         </model-viewer>
-        <button class="custom-button" onclick="activateAR()">🔍 View in AR</button>
+        <button class="custom-button" onclick="document.querySelector('model-viewer').activateAR()">🔍 View in AR</button>
     </div>
-
-    <script>
-        function activateAR() {
-            alert("AR mode activated!");
-        }
-    </script>
 </body>
 </html>
