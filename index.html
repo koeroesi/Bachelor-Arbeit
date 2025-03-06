@@ -44,43 +44,21 @@
             }
         }
 
-        .content {
-            text-align: center;
-            padding: 20px;
-            border-radius: 15px;
-            backdrop-filter: blur(8px);
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 1s forwards;
-            max-width: 90%;
-            position: relative;
-            z-index: 1;
-        }
-
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .content h1 {
-            font-size: 1.8rem;
-            margin-bottom: 10px;
-            letter-spacing: 1px;
-        }
-
-        .content p {
-            font-size: 1rem;
-            margin-bottom: 20px;
-            opacity: 0.8;
+        model-viewer {
+            width: 100%;
+            max-width: 500px;
+            height: 500px;
+            --ar-button-display: none; /* Versteckt den standard AR-Button */
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
         }
 
         .custom-button {
-            padding: 10px 22px;
+            margin-top: 10px;
+            padding: 12px 24px;
             font-size: 1rem;
             color: #ffffff;
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.2);
             border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: 50px;
             cursor: pointer;
@@ -88,36 +66,20 @@
             backdrop-filter: blur(8px);
             width: auto;
             display: inline-block;
-            box-shadow: none;
         }
 
         .custom-button:hover {
-            background: rgba(255, 255, 255, 0.25);
+            background: rgba(255, 255, 255, 0.3);
             transform: scale(1.05);
         }
 
-        model-viewer {
-            width: 100%;
-            max-width: 500px;
-            height: 400px;
-            --ar-button-display: none; /* Versteckt den standard AR-Button */
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-        }
-
         @media (max-width: 768px) {
-            .content h1 {
-                font-size: 1.5rem;
-            }
-            .content p {
-                font-size: 0.9rem;
-            }
             model-viewer {
-                min-height: 250px;
+                min-height: 300px;
                 max-width: 90%;
             }
             .custom-button {
-                padding: 8px 18px;
+                padding: 10px 20px;
                 font-size: 0.9rem;
             }
         }
@@ -125,24 +87,20 @@
 </head>
 <body>
     <div class="background"></div>
-    <div class="content">
-        <h1>Neue Dimensionen im Kostümdesign</h1>
-        <p>Interact with this 3D model in real-time.</p>
-        <model-viewer id="model-viewer"
-                      src="scan.glb" 
-                      ios-src="scan.usdz" 
-                      alt="3D Model Preview" 
-                      auto-rotate 
-                      camera-controls 
-                      animation-name="CubeAction"
-                      animation-loop
-                      ar
-                      ar-modes="webxr scene-viewer quick-look"
-                      environment-image="neutral">
-        </model-viewer>
-        <button class="custom-button" id="custom-ar-button" onclick="activateAR()">View in AR</button>
-    </div>
-
+    <model-viewer id="model-viewer"
+                  src="scan.glb" 
+                  ios-src="scan.usdz" 
+                  alt="3D Model Preview" 
+                  auto-rotate 
+                  camera-controls 
+                  animation-name="CubeAction"
+                  animation-loop
+                  ar
+                  ar-modes="webxr scene-viewer quick-look"
+                  environment-image="neutral">
+    </model-viewer>
+    <button class="custom-button" id="custom-ar-button" onclick="activateAR()">View in AR</button>
+    
     <script>
         function activateAR() {
             const modelViewer = document.getElementById('model-viewer');
