@@ -128,18 +128,26 @@
     <div class="content">
         <h1>Neue Dimensionen im Kostümdesign</h1>
         <p>Interact with this 3D model in real-time.</p>
-        <model-viewer src="scan.glb" 
+        <model-viewer id="model-viewer"
+                      src="scan.glb" 
                       ios-src="scan.usdz" 
                       alt="3D Model Preview" 
                       auto-rotate 
                       camera-controls 
-                      autoplay 
-                      shadow-intensity="1" 
-                      reveal="auto" 
-                      loading="eager" 
-                      poster="loading-image.jpg">
+                      animation-name="CubeAction"
+                      animation-loop
+                      ar
+                      ar-modes="webxr scene-viewer quick-look"
+                      environment-image="neutral">
         </model-viewer>
-        <button class="custom-button" onclick="document.querySelector('model-viewer').activateAR()">View in AR</button>
+        <button class="custom-button" id="custom-ar-button" onclick="activateAR()">View in AR</button>
     </div>
+
+    <script>
+        function activateAR() {
+            const modelViewer = document.getElementById('model-viewer');
+            modelViewer.activateAR();
+        }
+    </script>
 </body>
 </html>
