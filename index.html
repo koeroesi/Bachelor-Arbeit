@@ -44,13 +44,20 @@
             }
         }
 
+        h1 {
+            font-size: 1.8rem;
+            text-align: center;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
         model-viewer {
             width: 100%;
             max-width: 500px;
             height: 500px;
             --ar-button-display: none; /* Versteckt den standard AR-Button */
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
+            background: none;
+            border-radius: 0;
         }
 
         .custom-button {
@@ -74,6 +81,9 @@
         }
 
         @media (max-width: 768px) {
+            h1 {
+                font-size: 1.5rem;
+            }
             model-viewer {
                 min-height: 300px;
                 max-width: 90%;
@@ -87,6 +97,7 @@
 </head>
 <body>
     <div class="background"></div>
+    <h1>Neue Dimensionen im Kostümdesign</h1>
     <model-viewer id="model-viewer"
                   src="scan.glb" 
                   ios-src="scan.usdz" 
