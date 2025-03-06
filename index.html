@@ -133,7 +133,11 @@
                       alt="3D Model Preview" 
                       auto-rotate 
                       camera-controls 
-                      autoplay>
+                      autoplay 
+                      shadow-intensity="1" 
+                      reveal="auto" 
+                      loading="eager" 
+                      poster="loading-image.jpg">
         </model-viewer>
         <button class="custom-button" onclick="document.querySelector('model-viewer').activateAR()">View in AR</button>
     </div>
